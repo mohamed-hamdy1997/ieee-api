@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Post\PostCollection;
 use App\Http\Resources\Post\PostResource;
+use App\Http\Resources\Post\PostResourceGest;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PostsController extends Controller
 {
 
     public function __construct()
     {
-         $this->middleware('jwt.auth')->except('index');
+         $this->middleware('jwt.auth')->except(['index','show']);
 
     }
 

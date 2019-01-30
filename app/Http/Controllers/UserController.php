@@ -76,8 +76,8 @@ class UserController extends Controller
 	            Post::where('user_id' , $id)->delete();
 	            User::findOrFail($id)->delete();
 
-	            $users =   User::paginate(5);
-	            return redirect('/api/users')->with('user deleted');
+                $users =   User::orderBy('created_at','desc')->paginate(100);
+                return  UserCollection::collection($users);
 	          }
 	          else{
 	          	return back()->with('error','Unauthorized');

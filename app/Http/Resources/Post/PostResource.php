@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Post;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PostResource extends JsonResource
 {
@@ -14,18 +15,43 @@ class PostResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'title' => $this->title,
-            'body' => $this->body,
-            'post_image' => $this->post_image,
-            'post_video' => $this->post_video,
-            'post_file' => $this->post_file,
-            'created_at' => $this->created_at,
-            'post_owner' => $this->post_owner,
-            'href'       =>[
-                'edit'    => action('PostsController@update' , $this->id ),
-                'delete'    => action('PostsController@destroy' , $this->id ),
-                ]
-        ];
+        try{
+            $user = JWTAuth::parseToken()->authenticate();
+            if (($user->id == $this->user_id) || ($user->type == 'admin')) {
+                return [
+                    'title' => $this->title,
+                    'body' => $this->body,
+                    'post_image' => $this->post_image,
+                    'post_video' => $this->post_video,
+                    'post_file' => $this->post_file,
+                    'created_at' => $this->created_at,
+                    'post_owner' =>$this->user->name,
+                    'href' => [
+                        'edit' => action('PostsController@update', $this->id),
+                        'delete' => action('PostsController@destroy', $this->id),
+                    ]
+                ];
+            }else{
+                return [
+                    'title' => $this->title,
+                    'body' => $this->body,
+                    'post_image' => $this->post_image,
+                    'post_video' => $this->post_video,
+                    'post_file' => $this->post_file,
+                    'created_at' => $this->created_at,
+                    'post_owner' => $this->user->name,
+                ];
+            }
+        }catch (\Exception $e){
+                return [
+                    'title' => $this->title,
+                    'body' => $this->body,
+                    'post_image' => $this->post_image,
+                    'post_video' => $this->post_video,
+                    'post_file' => $this->post_file,
+                    'created_at' => $this->created_at,
+                    'post_owner' => $this->user->name
+                ];
+            }
     }
 }
