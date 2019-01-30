@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use JWTAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Facades\JWTFactory;
 use JWTAuthException;
 use App\User;
 use App\Post;
@@ -64,33 +65,27 @@ protected $user;
           
         }
 
+    public function logout(Request $request)
+    {
+        $this->validate($request, [
+            'token' => 'required'
+        ]);
 
-        public function addPost(Request $request)
-        {
-          $post=new Post();
-            
-          $post->user_id=Auth::user()->id;
-          $post->title= $request->input('title');
-          $post->body=$request->input('body');
-        $post->save();
-           
-           
-                return response()->json(['status' =>'success','message'=>'post added successfuly','post'=>$post],201);
-     
-            
+        try {
+            JWTAuth::invalidate($request->token);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User logged out successfully'
+            ]);
+        } catch (JWTException $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sorry, the user cannot be logged out'
+            ], 500);
         }
+    }
 
-        public function getPosts()
-        {
-            if(Auth::user()->type == 'admin')
-            {
-                return User::with('posts')->get();
-            }
-            return Post::select('title','body','created_at')->get();
-        }
-    
-
-        
  }
         
 

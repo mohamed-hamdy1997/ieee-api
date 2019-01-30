@@ -3,12 +3,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Http\Controllers;
 
-        //login & logout
+        //login & register
 Route::POST('login', 'AuthController@login');
 
-Route::post('register', 'AuthController@register');
+Route::POST('logout', 'AuthController@logout');
 
-Route::get('logout', 'Api\AuthController@logout');
+//Route::post('register', 'AuthController@register');
 
 
         //Article routes

@@ -17,19 +17,19 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('jwt.auth');
     }
 
 
     public function index()
     {
 
-//        if(auth()->user()->type == 'admin')
+        if(auth()->user()->type == 'admin')
         {
         $users =   User::orderBy('created_at','desc')->paginate(100);
         return  UserCollection::collection($users);
-//    }else{
-//           return back()->with('error','Unauthorized');
+    }else{
+           return back()->with('error','Unauthorized');
     }
 
     }
