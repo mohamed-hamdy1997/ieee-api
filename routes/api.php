@@ -10,6 +10,9 @@ Route::POST('logout', 'AuthController@logout');
 
 //Route::post('register', 'AuthController@register');
 
+Route::post('/password/reset', 'ResetPasswordController@recover')->name('password.reset');
+
+Route::post('/password/reset/{reset_code}', 'ResetPasswordController@Reset')->name('password.reset');
 
         //Article routes
 Route::get('articles', 'PostsController@index');
