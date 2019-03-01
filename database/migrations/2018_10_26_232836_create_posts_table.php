@@ -17,10 +17,8 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('body');
-            $table->string('post_owner');
-            $table->string('post_image')->nullable(true);
-            $table->string('post_video')->nullable(true);
-            $table->string('post_file')->nullable(true);
+            $table->string('hero_image')->nullable(true);
+            $table->string('custom_file')->nullable(true);
             $table->integer('user_id')->nullable()->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
 

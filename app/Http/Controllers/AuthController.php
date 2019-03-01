@@ -52,8 +52,7 @@ protected $user;
 
     public function register(Request $request)
     {
-       
-        
+
         $user= new User();
         $user->name= $request->input('name');
         $user->email=$request->input('email');
