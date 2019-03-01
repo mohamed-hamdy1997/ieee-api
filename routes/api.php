@@ -8,7 +8,7 @@ Route::POST('login', 'AuthController@login');
 
 Route::POST('logout', 'AuthController@logout');
 
-Route::post('register', 'AuthController@register');
+//Route::post('register', 'AuthController@register');
 
 Route::post('/password/reset', 'ResetPasswordController@recover')->name('password.reset');
 
